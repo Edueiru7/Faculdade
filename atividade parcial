@@ -1,0 +1,115 @@
+class ItemBiblioteca:
+    def __init__(self, titulo, ano_publicacao):
+        self._titulo = titulo
+        self._ano_publicacao = ano_publicacao
+
+    # Encapsulamento usando @property e @setter
+    @property
+    def titulo(self):
+        return self._titulo
+
+    @titulo.setter
+    def titulo(self, titulo):
+        self._titulo = titulo
+
+    @property
+    def ano_publicacao(self):
+        return self._ano_publicacao
+
+    @ano_publicacao.setter
+    def ano_publicacao(self, ano):
+        if ano > 0:
+            self._ano_publicacao = ano
+        else:
+            raise ValueError("O ano de publicação deve ser positivo.")
+
+    # Método genérico para exibir detalhes
+    def apresentar_detalhes(self):
+        return f'Título: {self._titulo}, Ano de Publicação: {self._ano_publicacao}'
+
+class Livro(ItemBiblioteca):
+    def __init__(self, titulo, ano_publicacao, autor, num_paginas):
+        # Chamando o construtor da classe base (ItemBiblioteca)
+        super().__init__(titulo, ano_publicacao)
+        self._autor = autor
+        self._num_paginas = num_paginas
+
+    # Encapsulamento do número de páginas
+    @property
+    def num_paginas(self):
+        return self._num_paginas
+
+    @num_paginas.setter
+    def num_paginas(self, paginas):
+        if paginas > 50:
+            self._num_paginas = paginas
+        else:
+            print("Erro: O número de páginas deve ser maior que 50.")
+
+    # Sobrescrevendo o método para detalhar o Livro
+    def apresentar_detalhes(self):
+        return f'Título: {self._titulo}, Ano de Publicação: {self._ano_publicacao}, Autor: {self._autor}, Páginas: {self._num_paginas}'
+
+class Revista(ItemBiblioteca):
+    def __init__(self, titulo, ano_publicacao, edicao, volume):
+        # Chamando o construtor da classe base (ItemBiblioteca)
+        super().__init__(titulo, ano_publicacao)
+        self._edicao = edicao
+        self._volume = volume
+
+    # Sobrescrevendo o método para detalhar a Revista
+    def apresentar_detalhes(self):
+        return f'Título: {self._titulo}, Ano de Publicação: {self._ano_publicacao}, Edição: {self._edicao}, Volume: {self._volume}'
+
+# Função para cadastrar um Livro
+def cadastrar_livro():
+    titulo = input("Digite o título do livro: ")
+    ano_publicacao = int(input("Digite o ano de publicação do livro: "))
+    autor = input("Digite o autor do livro: ")
+    num_paginas = int(input("Digite o número de páginas do livro: "))
+    livro = Livro(titulo, ano_publicacao, autor, num_paginas)
+    return livro
+
+# Função para cadastrar uma Revista
+def cadastrar_revista():
+    titulo = input("Digite o título da revista: ")
+    ano_publicacao = int(input("Digite o ano de publicação da revista: "))
+    edicao = int(input("Digite a edição da revista: "))
+    volume = int(input("Digite o volume da revista: "))
+    revista = Revista(titulo, ano_publicacao, edicao, volume)
+    return revista
+
+# Função para exibir o acervo
+def listar_acervo(acervo):
+    if acervo:
+        for item in acervo:
+            print(item.apresentar_detalhes())
+    else:
+        print("O acervo está vazio.")
+
+# Menu interativo
+def menu():
+    acervo = []  # Lista para armazenar os itens do acervo
+    while True:
+        print("\n1. Cadastrar Livro")
+        print("2. Cadastrar Revista")
+        print("3. Listar Acervo")
+        print("4. Sair")
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == '1':
+            livro = cadastrar_livro()
+            acervo.append(livro)
+        elif opcao == '2':
+            revista = cadastrar_revista()
+            acervo.append(revista)
+        elif opcao == '3':
+            listar_acervo(acervo)
+        elif opcao == '4':
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+# Rodando o menu
+menu()
